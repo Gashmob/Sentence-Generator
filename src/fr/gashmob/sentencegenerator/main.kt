@@ -1,6 +1,9 @@
 package fr.gashmob.sentencegenerator
 
 import fr.gashmob.sentencegenerator.model.Registers
+import java.io.BufferedInputStream
+import java.io.File
+import java.io.FileInputStream
 import java.util.*
 import kotlin.math.abs
 
@@ -24,13 +27,14 @@ fun menu(bank: Registers) {
         println("\nMain menu (${bank.actualRegister()})")
         println("1) Generate")
         println("2) Add a sentence")
-        println("3) Databases")
-        println("4) Quit")
+        println("3) Add a file")
+        println("4) Databases")
+        println("5) Quit")
         print("\t?")
 
         val sc = Scanner(System.`in`)
         var choice = sc.nextInt()
-        while (choice < 1 || choice > 4) {
+        while (choice < 1 || choice > 5) {
             println("Wrong choice !")
             print("\t?")
             choice = sc.nextInt()
@@ -39,8 +43,9 @@ fun menu(bank: Registers) {
         when (choice) {
             1 -> generate(bank)
             2 -> add(bank)
-            3 -> databases(bank)
-            4 -> exit = true
+            3 -> addFile(bank)
+            4 -> databases(bank)
+            5 -> exit = true
         }
     }
 }
@@ -58,6 +63,20 @@ fun add(bank: Registers) {
     print("\t?")
     val sentence = (Scanner(System.`in`)).nextLine()
     bank.getRegister()?.add(sentence)
+}
+
+fun addFile(bank: Registers) {
+    println("Add a file")
+    println("Absolute path to the file")
+    print("\t?")
+    val filename = (Scanner(System.`in`)).nextLine()
+
+    val file = File(filename)
+    val sc = Scanner(file)
+    while (sc.hasNextLine()) {
+        bank.getRegister()?.add(sc.nextLine())
+    }
+    sc.close()
 }
 
 // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
