@@ -1,8 +1,9 @@
 package fr.gashmob.sentencegenerator.model
 
 import fr.gashmob.sentencegenerator.model.GenType.WORD
+import java.io.Serializable
 
-class Register {
+class Register : Serializable {
     private val words: HashMap<String, ArrayList<String>> = HashMap()
 
     private fun add(word: String, nextWord: String) {
@@ -33,13 +34,16 @@ class Register {
         return result
     }
 
-    fun show() {
-        for (word in words.entries) {
-            println("${word.key} : ")
-            for (next in word.value) {
-                println("\t$next")
+    fun size(): Int {
+        var result : Int = 0
+
+        for (word in words) {
+            for (w in word.value) {
+                result++
             }
         }
+
+        return result
     }
 
     private fun getRandom(word: String) = if (words[word] != null) words[word]!![random(end = words[word]!!.size)] else ""

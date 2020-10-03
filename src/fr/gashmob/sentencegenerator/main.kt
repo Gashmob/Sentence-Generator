@@ -10,14 +10,18 @@ fun main() {
     println("========================")
 
     val bank = Registers()
+    bank.load()
 
     menu(bank)
+
+    bank.save()
 }
 
 fun menu(bank: Registers) {
     var exit = false
 
     while (!exit) {
+        println("\nMain menu (${bank.actualRegister()})")
         println("1) Generate")
         println("2) Add a sentence")
         println("3) Databases")
@@ -46,14 +50,14 @@ fun generate(bank: Registers) {
     println("Quantity")
     print("\t?")
     val quantity = abs((Scanner(System.`in`)).nextInt())
-    println(bank.main.generate(quantity))
+    println(bank.getRegister()?.generate(quantity))
 }
 
 fun add(bank: Registers) {
     println("Add a sentence")
     print("\t?")
     val sentence = (Scanner(System.`in`)).nextLine()
-    bank.main.add(sentence)
+    bank.getRegister()?.add(sentence)
 }
 
 // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
@@ -62,12 +66,12 @@ fun databases(bank: Registers) {
     var exit = false
 
     while (!exit) {
-        println("Databases")
+        println("\nDatabases (${bank.actualRegister()})")
         println("1) Show")
         println("2) Remove")
         println("3) Create")
         println("4) Choose")
-        println("5) Quit")
+        println("5) Return")
         print("\t?")
 
         val sc = Scanner(System.`in`)
@@ -80,26 +84,37 @@ fun databases(bank: Registers) {
 
         when (choice) {
             1 -> show(bank)
-            2 -> remove()
-            3 -> create()
-            4 -> choose()
+            2 -> remove(bank)
+            3 -> create(bank)
+            4 -> choose(bank)
             5 -> exit = true
         }
     }
 }
 
 fun show(bank: Registers) {
-    bank.main.show()
+    println("Show")
+    bank.show()
 }
 
-fun remove() {
+fun remove(bank: Registers) {
     println("Remove")
+    print("\t?")
+    val name = (Scanner(System.`in`)).next()
+    bank.remove(name)
 }
 
-fun create() {
+fun create(bank: Registers) {
     println("Create")
+    print("\t?")
+    val name = (Scanner(System.`in`)).next()
+    bank.create(name)
 }
 
-fun choose() {
+fun choose(bank: Registers) {
     println("Choose")
+    print("\t?")
+    val name = (Scanner(System.`in`)).next()
+    if (!bank.choose(name)) println("Banque de données inexistantes")
+    else println("Changement effectué")
 }
